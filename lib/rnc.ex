@@ -1,5 +1,5 @@
 defmodule Rnc do
-  @roman_numbers %{
+  @roman_numerals %{
     1 => "I",
     4 => "IV",
     5 => "V",
@@ -14,11 +14,12 @@ defmodule Rnc do
     900 => "CM",
     1000 => "M"
   }
-  @keys @roman_numbers |> Map.keys() |> Enum.reverse()
+  
+  @arabic_keys @roman_numerals |> Map.keys() |> Enum.reverse()
 
-  def convert(arabic), do: @keys |> Enum.reduce({arabic, ""}, &apply_key(&1, &2)) |> elem(1)
+  def convert(arabic), do: @arabic_keys |> Enum.reduce({arabic, ""}, &apply_key(&1, &2)) |> elem(1)
 
-  defp apply_key(key, {value, result}) when value >= key, do: apply_key(key, {value - key, result <> @roman_numbers[key]})
+  defp apply_key(key, {arabic, roman}) when arabic >= key, do: apply_key(key, {arabic - key, roman <> @roman_numerals[key]})
 
-  defp apply_key(key, acc), do: acc
+  defp apply_key(_key, {arabic, roman}), do: {arabic, roman}
 end
